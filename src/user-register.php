@@ -5,7 +5,7 @@
 </head>
 <body>
     <h2>新規会員登録フォーム</h2>
-    <form action="register.php" method="post" enctype="multipart/form-data">
+    <form action="user-register-completed.php" method="post" enctype="multipart/form-data">
         <div>
             <label for="username">ユーザー名:</label>
             <input type="text" id="username" name="username" required>

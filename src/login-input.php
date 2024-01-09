@@ -18,7 +18,7 @@
             <button type="submit">ログイン</button>
         </div>
         <div>
-            <a href="register.php">新規作成はこちらから</a>
+            <a href="user-register.php">新規作成はこちらから</a>
         </div>
     </form>
 </body>
