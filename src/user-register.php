@@ -1,34 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>新規会員登録</title>
-</head>
-<body>
-    <h2>新規会員登録フォーム</h2>
-    <form action="user-register-completed.php" method="post" enctype="multipart/form-data">
-        <div>
-            <label for="username">ユーザー名:</label>
-            <input type="text" id="username" name="username" required>
-        </div>
-        <div>
-            <label for="email">メールアドレス:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div>
-            <label for="password">パスワード:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <div>
-            <label for="profile">プロフィール:</label>
-            <textarea id="profile" name="profile"></textarea>
-        </div>
-        <div>
-            <label for="icon">アイコン（画像）:</label>
-            <input type="file" id="icon" name="icon">
-        </div>
-        <div>
-            <button type="submit">登録</button>
-        </div>
-    </form>
-</body>
-</html>
+<?php session_start(); ?>
+<?php require 'header.php'; ?>
+<?php require 'menu.php'; ?>
+<?php require 'db-connect.php';?>
+<?php
+$Username=$Password=$Email=$Icon=$Profile='';
+if(isset($_SESSION['Users'])){
+    $Username=$_SESSION['Users']['Username'];
+    $Email=$_SESSION['Users']['Email'] ;
+    $Icon=$_SESSION['Users']['Icon'] ;
+    $Profile=$_SESSION['Users']['Profile'] ;
+}
+    echo '<form action="user-register-completed.php" method="post">';
+    echo '<table>';
+    echo'<tr><td>お名前</td><td>';
+    echo '<input type="text" name="Username" value="', $Username,'">';
+    echo '</td></tr>';
+    echo'<tr><td>パスワード</td><td>';
+    echo '<input type="password" name="Password" value="', $Password, '">';
+    echo '</td></tr>';
+    echo'<tr><td>メールアドレス</td><td>';
+    echo '<input type="text" name="Email" value="', $Email, '">';
+    echo '</td></tr>';
+    echo'<tr><td>アイコン画像</td><td>';
+    echo '<input type="file" name="Icon" value="', $Icon, '">';
+    echo '</td></tr>';
+    echo'<tr><td>プロフィール</td><td>';
+    echo '<input type="textarea" name="Profile" value="', $Profile, '">';
+    echo '</td></tr>';
+    echo '</table>';
+    echo '<input type="submit" value="登録">';
+    echo '</form>';
+    ?>
+    <?php require 'footer.php'; ?>

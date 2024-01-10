@@ -1,33 +1,40 @@
+<?php session_start();?>
+<?php require 'header.php';?>
+<?php require 'menu.php';?>
+<?php require 'db-connect.php';?>
 <?php
-require 'db-connect.php'; 
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $username = $conn->real_escape_string($_POST['username']);
-    $email = $conn->real_escape_string($_POST['email']);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // パスワードのハッシュ化
-    $profile = $conn->real_escape_string($_POST['profile']);
-
-   
-    $icon = $_FILES['icon'];
-    if ($icon['error'] == 0) {
-        $iconPath = 'upload/' . basename($icon['name']);
-        if (move_uploaded_file($icon['tmp_name'], $iconPath)) {
-           
-        } else {
-            
-            echo "アイコンのアップロードに失敗しました。";
-        }
-    }
-
-    $sql = "INSERT INTO Users (Username, Email, Password, Profile, Icon) VALUES ('$username', '$email', '$password', '$profile', '$iconPath')";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "新規登録が完了しました。";
-    } else {
-        echo "エラー: " . $sql . "<br>" . $conn->error;
-    }
+$pdo = new PDO($connect,USER,PASS);
+if(isset($_SESSION['Users'])){
+    $UserID=$_SESSION['Users']['UserID'];
+    $sql=$pdo->prepare('select * from Users where UserID!=? and Username=?');
+    $sql->execute([$UserID,$_POST['Username']]);
+}else{
+    $sql=$pdo->prepare('select * from Users where Username=?');
+    $sql->execute([$_POST['Username']]);
 }
+if(empty($sql->fetchAll())){  
+    if(isset($_SESSION['Users'])){
+        $sql=$pdo->prepare('update Users set Username=?, Password=?, Email=?, Icon=?, Profile=? where UserID=?');
+        $sql->execute([
+            $_POST['Username'], password_hash($_POST['Password'], PASSWORD_DEFAULT),
+            $_POST['Email'], $_POST['Icon'], $_POST['Profile'], $UserID]);
+        
 
-$conn->close();
+        $_SESSION['Users']=[
+            'UserID'=>$UserID,'Username'=>$_POST['Username'],
+            'Password'=>$_POST['Password'],'Email'=>$_POST['Email'],
+            'Icon'=>$_POST['Icon'],'Profile'=>$_POST['Profile']];
+        echo 'お客様情報を更新しました。';
+    }else{
+        $sql=$pdo->prepare('insert into Users values(null,?,?,?,?,?)');
+$sql->execute([
+    $_POST['Username'], password_hash($_POST['Password'], PASSWORD_DEFAULT),
+    $_POST['Email'], $_POST['Icon'], $_POST['Profile']]);
+
+        echo 'お客様情報を登録しました。';
+    }
+}else{
+    echo 'ログイン名がすでに使用されていますので、変更してください。';
+}
 ?>
+<?php require 'footer.php';?>
