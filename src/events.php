@@ -1,35 +1,37 @@
-<?php
+<?php 
 require 'header.php';
 require 'menu.php';
 require 'db-connect.php';
 
+// カテゴリデータの取得
+$stmt = $pdo->prepare('SELECT * FROM Categories');
+$stmt->execute();
+$categories = $stmt->fetchAll();
+
+echo '<h1>イベント一覧</h1>';
+echo '<h3>プルダウンで探したいカテゴリを選択してから「探す」ボタンを押してください</h3>';
+
+echo '<form method="get">';
+echo '<select name="category">';
+echo '<option value="">全てのイベント</option>'; 
+foreach ($categories as $category) {
+    echo '<option value="', $category['CategoryID'], '">', htmlspecialchars($category['Name']), '</option>';
+}
+echo '</select>';
+echo '<button type="submit">探す</button>';
+echo '</form>';
 
 try {
-    $stmt = $pdo->prepare('SELECT * FROM Categories');
-    $stmt->execute();
-    $categories = $stmt->fetchAll();
-
-    echo '<h1>イベント一覧</h1>';
-    echo '<h3>プルダウンで探したいカテゴリを選択してから「探す」ボタンを押してください</h3>';
- 
-    echo '<form method="get">';
-    echo '<select name="category">';
-    echo '<option value="">全てのイベント</option>'; 
-    foreach ($categories as $category) {
-        echo '<option value="', $category['CategoryID'], '">', htmlspecialchars($category['Name']), '</option>';
-    }
-    echo '</select>';
-    echo '<button type="submit">探す</button>';
-    echo '</form>';
-
-  
     if (isset($_GET['category']) && $_GET['category'] !== '') {
         $selectedCategory = $_GET['category'];
-        $sql = 'SELECT * FROM Events WHERE CategoryID = ?';
+        $sql = 'SELECT Events.*, Users.Username, Users.Icon FROM Events 
+                JOIN Users ON Events.CreatorID = Users.UserID 
+                WHERE CategoryID = ?';
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$selectedCategory]);
     } else {
-        $sql = 'SELECT * FROM Events';
+        $sql = 'SELECT Events.*, Users.Username, Users.Icon FROM Events 
+                JOIN Users ON Events.CreatorID = Users.UserID';
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
     }
@@ -37,6 +39,10 @@ try {
     echo '<ul>';
     foreach ($stmt as $row) {
         echo '<li>';
+        if ($row['Icon']) {
+            echo '<img src="' . htmlspecialchars($row['Icon']) . '" alt="アイコン" style="width: 50px; height: 50px;"> ';
+        }
+        echo htmlspecialchars($row['Username']) . ': ';
         echo htmlspecialchars($row['Title'], ENT_QUOTES, 'UTF-8');
         echo ' - ';
         echo htmlspecialchars($row['Description'], ENT_QUOTES, 'UTF-8');
@@ -55,7 +61,6 @@ try {
 }
 
 $pdo = null;
+
+require 'footer.php'; 
 ?>
-
-<?php require 'footer.php'; ?>
-
