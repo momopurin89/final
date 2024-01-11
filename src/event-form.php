@@ -1,6 +1,16 @@
-<?php require 'header.php'; ?>
-<?php require 'menu.php'; ?>
-<?php require 'db-connect.php'; ?>
+<?php 
+session_start();
+require 'db-connect.php';
+
+if (!isset($_SESSION['Users']['UserID'])) {
+    header('Location: login-input.php');
+    exit;
+}
+
+
+require 'header.php';
+require 'menu.php'; 
+?>
 
 <!DOCTYPE html>
 <html>

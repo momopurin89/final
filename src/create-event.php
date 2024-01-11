@@ -1,6 +1,8 @@
 <?php
 session_start();
 require 'db-connect.php';
+require 'header.php'; 
+require 'menu.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = $_POST['title'];
