@@ -39,9 +39,9 @@ try {
     echo '<ul>';
     foreach ($stmt as $row) {
         echo '<li>';
-        if ($row['Icon']) {
-            echo '<img src="' . htmlspecialchars($row['Icon']) . '" alt="アイコン" style="width: 50px; height: 50px;"> ';
-        }
+        // アイコンのパスを正しいものに修正する必要があります
+        $iconPath = '../img/' . $row['Icon'];
+        echo '<img src="' . htmlspecialchars($iconPath) . '" alt="アイコン" style="width: 50px; height: 50px;"> ';
         echo htmlspecialchars($row['Username']) . ': ';
         echo htmlspecialchars($row['Title'], ENT_QUOTES, 'UTF-8');
         echo ' - ';

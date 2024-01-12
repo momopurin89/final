@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $endDateTime = $_POST['endDateTime'];
     $categoryID = $_POST['category']; 
 
-    $creatorID = isset($_SESSION['userid']) ? $_SESSION['userid'] : 1;
+    $creatorID = isset($_SESSION['Users']['UserID']) ? $_SESSION['Users']['UserID'] : 1;
 
     $sql = 'INSERT INTO Events (Title, Description, StartDateTime, EndDateTime, CreatorID, CategoryID) VALUES (?, ?, ?, ?, ?, ?)';
     $stmt = $pdo->prepare($sql);
