@@ -3,7 +3,7 @@ require 'header.php';
 require 'menu.php';
 require 'db-connect.php';
 
-// カテゴリデータの取得
+
 $stmt = $pdo->prepare('SELECT * FROM Categories');
 $stmt->execute();
 $categories = $stmt->fetchAll();
@@ -39,7 +39,6 @@ try {
     echo '<ul>';
     foreach ($stmt as $row) {
         echo '<li>';
-        // アイコンのパスを正しいものに修正する必要があります
         $iconPath = '../img/' . $row['Icon'];
         echo '<img src="' . htmlspecialchars($iconPath) . '" alt="アイコン" style="width: 50px; height: 50px;"> ';
         echo htmlspecialchars($row['Username']) . ': ';
