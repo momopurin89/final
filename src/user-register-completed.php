@@ -6,10 +6,9 @@
 <?php
 $pdo = new PDO($connect, USER, PASS);
 
-// 選択されたアイコンのファイル名を取得
+
 $iconPath = isset($_POST['Icon']) ? $_POST['Icon'] : '';
 
-// ユーザー情報の登録または更新
 if (isset($_SESSION['Users'])) {
     $UserID = $_SESSION['Users']['UserID'];
     $sql = $pdo->prepare('update Users set Username=?, Password=?, Email=?, Icon=?, Profile=? where UserID=?');
