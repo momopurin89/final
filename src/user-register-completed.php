@@ -28,3 +28,4 @@ if (isset($_SESSION['Users'])) {
 
 require 'footer.php';
 ?>
+<?php require 'back.php'; ?>

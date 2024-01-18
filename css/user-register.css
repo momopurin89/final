@@ -1,0 +1,29 @@
+.center-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 0vh;
+}
+
+
+
+.btn-style {
+    --link-btn-color: #333;
+    display: block;
+    margin: auto;
+    width: 200px;
+    border: 1px solid var(--link-btn-color);
+    background: var(--link-btn-color);
+    padding: 0.5em 2em;
+    color: #fff;
+    border-radius: 1px;
+    text-decoration: none;
+    text-align: center;
+    transition: all .3s;
+}
+  
+.btn-style:hover {
+    background: initial;
+    color: var(--link-btn-color);
+}

@@ -19,8 +19,10 @@ foreach ($sql as $row){
 }
 if(isset($_SESSION['Users'])){
     echo 'こんにちは、',$_SESSION['Users']['Username'],'さん。';
+    
 }else {
     echo 'ログイン名またはパスワードが違います';
 }
 ?>
 <?php require 'footer.php';?>
+<?php require 'back.php'; ?>
